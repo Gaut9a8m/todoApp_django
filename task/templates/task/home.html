@@ -1,0 +1,35 @@
+<h1>Welcome to TODOAPP</h1>
+<hr>
+<br>
+<form action="{% url 'home' %}" method="POST">
+    {% csrf_token %}
+    Enter Your Task: <br>
+    <input type="text" name="task"/>
+    <input type="submit" value="Add"/>
+
+</form>
+
+<h3>Lists of Task</h3>
+<hr>
+{% for i in alltask.all %}
+<div style="border-width: 2px ">
+    <p>{{i.id}}.{{i.task}} </p> 
+    <p>{{i.time}}</p>
+    {% if i.complete %}
+     <p><span style="cursor: pointer; color: green">Yes</span> <a href="javascript:{document.getElementById('delete').submit()}" style="color: hotpink"><button>delete</button></a></p>
+    {% else %}
+    <p><a  href="javascript:{document.getElementById('complete').submit()}"><button style="cursor: pointer; color: red">No</button></a> <a href="javascript:{document.getElementById('delete').submit()}" style="color: hotpink"><button>delete</button></a></p>
+    <form id="complete" action="{% url 'taskcompleted' i.id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="" id="">
+    </form>
+    
+    {% endif %}
+    <form id="delete" action="{% url 'delete' i.id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="" id="">
+    </form>
+</div>
+
+
+{% endfor %}
